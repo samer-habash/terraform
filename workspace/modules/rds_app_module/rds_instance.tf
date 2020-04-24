@@ -1,5 +1,5 @@
 module "shared_vars" {
-  source = "../../projects/projects_shared_vars"
+  source = "../../projects/Globals_across_all_projects"
 }
 
 resource "aws_db_instance" "rds_instance" {
@@ -11,13 +11,16 @@ resource "aws_db_instance" "rds_instance" {
   engine               = "mysql"
   engine_version       = "5.7.22"
   instance_class       = "db.t2.micro"
-  name                 = "bookstack"
-  username             = "bookstack"
-  // I will generate random pass
+  name                 = module.shared_vars.rds_project_dbname
+  username             = module.shared_vars.rds_project_dbuser
+  //Grab the random pass generated from shared_vars
   password             = module.shared_vars.rds_random_pass_generation
-  // password             = "secret123"
+  port                 = module.shared_vars.project_rds_internal_dbport
   parameter_group_name = "default.mysql5.7"
   skip_final_snapshot = true
-  vpc_security_group_ids = [data.aws_security_group.default.id, aws_security_group.project_sg.id]
+  // security group default+rds
+  vpc_security_group_ids = [data.aws_security_group.default.id, aws_security_group.rds_sg.id]
   db_subnet_group_name = aws_db_subnet_group.rds_subnet.name
 }
+
+

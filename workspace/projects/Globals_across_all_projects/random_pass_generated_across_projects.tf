@@ -1,5 +1,5 @@
 /*
-I will generate an rds password that has ascii only as proposed in the terraform error below:
+I will generate an rds_app_project password that has ascii only as proposed in the terraform error below:
 Error creating DB Instance: InvalidParameterValue: The parameter MasterUserPassword is not a valid password.
 Only printable ASCII characters besides '/', '@', '"', ' ' may be used.
 
